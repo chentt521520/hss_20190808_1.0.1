@@ -307,6 +307,7 @@ public class GrouponDetailActivity extends BaseActivity {
                 goodInfo.setPostage(mapString.get("postage"));
                 goodInfo.setStart_time(mapDouble.get("start_time"));
                 goodInfo.setStop_time(mapDouble.get("stop_time"));
+                goodInfo.setUserCollect((boolean) storeInfo.get("userCollect"));
             }
             grouponGood.setStoreInfo(goodInfo);
 
@@ -350,6 +351,8 @@ public class GrouponDetailActivity extends BaseActivity {
         btnSingleBuy.setText(goodInfo.getProduct_price() + "\n单独购买");
         btnGrouponBuy.setText(goodInfo.getPrice() + "\n拼团购买");
 
+        isCollect = goodInfo.isUserCollect();
+        setCollect();
         if (grouponGood.getReply() == null) {
             findViewById(R.id.no_estmate_item).setVisibility(View.VISIBLE);
             findViewById(R.id.estmate_item).setVisibility(View.GONE);
@@ -492,22 +495,26 @@ public class GrouponDetailActivity extends BaseActivity {
         try {
             HashMap map = new Gson().fromJson(json, HashMap.class);
             if (map != null && Double.parseDouble(map.get("code") + "") == 200) {
-                if (isCollect) {  //取消收藏
-                    isCollect = false;
-                    btnCollect.setText("收藏");
-                    btnCollect.setTextColor(Color.parseColor("#0f0f0f"));
-                    TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect, 2);
-                } else {  //收藏好
-                    isCollect = true;
-                    btnCollect.setText("已收藏");
-                    btnCollect.setTextColor(Color.parseColor("#c22222"));
-                    TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect_yes, 2);
-                }
+                setCollect();
             } else {
                 tost(map.get("msg") + "");
             }
         } catch (Exception e) {
             tost(e.getMessage());
+        }
+    }
+
+    private void setCollect() {
+        if (isCollect) {  //取消收藏
+            isCollect = false;
+            btnCollect.setText("收藏");
+            btnCollect.setTextColor(Color.parseColor("#0f0f0f"));
+            TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect, 2);
+        } else {  //收藏好
+            isCollect = true;
+            btnCollect.setText("已收藏");
+            btnCollect.setTextColor(Color.parseColor("#c22222"));
+            TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect_yes, 2);
         }
     }
 }

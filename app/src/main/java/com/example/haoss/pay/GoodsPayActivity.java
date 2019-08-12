@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -142,6 +143,7 @@ public class GoodsPayActivity extends BaseActivity {
                 ApiManager.getResultString(Netconfig.payAliPay, map, new OnHttpCallback<String>() {
                     @Override
                     public void success(String result) {
+                        Log.e("!!!!!!!!!!", "result: " + result);
                         //阿里{"code":200,"msg":"ok","data":"alipay_sdk=alipay-sdk-php-20180705&app_id=2018103061953354&biz_content=%7B%22body%22%3A%22%5Cu8ba2%5Cu5355%5Cu652f%5Cu4ed8%22%2C%22subject%22%3A%22%5Cu8ba2%5Cu5355%5Cu652f%5Cu4ed8%22%2C%22out_trade_no%22%3A%22wx2019061217594110018%22%2C%22timeout_express%22%3A%2230m%22%2C%22total_amount%22%3A10.01%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fapi.haoshusi.com%2Fapi%2FCallback%2FaliPayBack&sign_type=RSA2&timestamp=2019-06-12+18%3A04%3A21&version=1.0&sign=fUW9D8ftqUFBhg5yb0p6lV3KqOKa2MtqcOn28PxTOT8NQoCAuYhHEJbNvL9T%2FiZ8UqJJ0iPl507r1vFPpFpGEvuRAqmeAHAWMmE8AbuIaxIDfi%2FEJtIjqpE7YPTb%2F6GGA3hY1pkiSZMY5EtN6z13IWpwVOxjN%2F8169b3jbC1bFlKVFe%2FuPn2%2BisEGMQPfNqSsmrv6T%2BEB6DSgfEQPMotFE6cek%2FZ3ztnjBFQ0XYFkPLUYb3wS0C0snvc0PsknYUrtI0hEqFhR7jm4j49HZ1m9%2FN2vtyljeq9fTIPLReT2xh15j1XwiTogSVdpQj60FfwzziIDJDJldsZfmbMbwK%2FCg%3D%3D","count":0}
                         new PayAliPay(GoodsPayActivity.this).PayZFB(result);
                     }
