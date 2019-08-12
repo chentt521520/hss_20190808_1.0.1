@@ -90,7 +90,6 @@
                     android:layout_below="@+id/goodsdetailsactivity_originalprice"
                     android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:singleLine="true"
                     android:text="@string/null_text"
                     android:textColor="@color/blackColor4d"
                     android:textSize="14sp"
