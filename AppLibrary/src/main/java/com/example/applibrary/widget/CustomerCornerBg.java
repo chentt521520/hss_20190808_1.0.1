@@ -20,7 +20,7 @@ public class CustomerCornerBg extends Drawable {
     private Paint paint;
     private float height;
 
-    public CustomerCornerBg(Context context, float height) {
+    public CustomerCornerBg(Context context,float height) {
         this.context = context;
         this.height = height;
         paint = new Paint();
@@ -31,10 +31,10 @@ public class CustomerCornerBg extends Drawable {
     @Override
     public void draw(@NonNull Canvas canvas) {
 
-        int width = DensityUtil.getScreenWidth(context);
+        int width = DensityUtil.getScreenWidth(context) - 100;
         int h = DensityUtil.dip2px(context, height);
         RectF reft = new RectF(0, 0, width, h);
-        canvas.drawRoundRect(reft, h / 2, h / 2, paint);
+        canvas.drawRoundRect(reft, h/2, h/2, paint);
     }
 
     @Override
