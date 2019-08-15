@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.applibrary.base.ConfigVariate;
@@ -20,6 +19,7 @@ import com.example.applibrary.entity.GrouponGoodInfo;
 import com.example.applibrary.entity.GrouponUser;
 import com.example.applibrary.entity.ReplyInfo;
 import com.example.applibrary.httpUtils.ErrorEnum;
+import com.example.applibrary.httpUtils.OnHttpCallback;
 import com.example.applibrary.utils.ImageUtils;
 import com.example.applibrary.utils.SharedPreferenceUtils;
 import com.example.applibrary.widget.CustomTitleView;
@@ -40,6 +40,7 @@ import com.example.haoss.base.BaseActivity;
 import com.example.haoss.conversation.ServerOnlineActivity;
 import com.example.haoss.goods.estimate.EstimateListActivity;
 import com.example.haoss.indexpage.tourdiy.adapter.GrouponPartnerAdapter;
+import com.example.haoss.manager.ApiManager;
 import com.example.haoss.person.login.LoginActivity;
 
 import com.google.gson.Gson;
@@ -65,16 +66,13 @@ public class GrouponDetailActivity extends BaseActivity {
     private AppLibLication application;
     private boolean isCollect;
     private TextView btnCollect;
-    private TextView btnService;
     private TextView btnSingleBuy;
     private TextView btnGrouponBuy;
     private TextView good_estimate_num, good_favorable_rate, user_name, estmate_content;   //评价数量、满意度
     private ImageView userHead;
-    private RelativeLayout good_estimate_layout;   //评价列表
 
     private DialogGoodsPay dialog;
     private List<GrouponUser> userList;
-    private MyListView partnerList;
     private GrouponPartnerAdapter adapter;
     private GrouponGoodDetail grouponGood;
     private ShareWeChar shareWeChar;
@@ -122,23 +120,21 @@ public class GrouponDetailActivity extends BaseActivity {
         salesText = findViewById(R.id.goodsdetailsactivity_monthlysales);
         goodName = findViewById(R.id.goodsdetailsactivity_name);
         grouponNumber = findViewById(R.id.goodsdetailsactivity_intro);
-        partnerList = findViewById(R.id.partner_listview);
+        MyListView partnerList = findViewById(R.id.partner_listview);
         btnCollect = findViewById(R.id.button_collect);
-        btnService = findViewById(R.id.button_service);
         btnSingleBuy = findViewById(R.id.button_single_buy);
         btnGrouponBuy = findViewById(R.id.button_groupon_buy);
 
         good_estimate_num = findViewById(R.id.good_estimate_num);
         good_favorable_rate = findViewById(R.id.good_favorable_rate);
-        good_estimate_layout = findViewById(R.id.good_estimate_layout);
         estmate_content = findViewById(R.id.estmate_content);
         userHead = findViewById(R.id.user_head);
         user_name = findViewById(R.id.user_name);
-        good_estimate_layout.setOnClickListener(onClickListener);
 
+        findViewById(R.id.good_estimate_layout).setOnClickListener(onClickListener);
         findViewById(R.id.look_more).setOnClickListener(onClickListener);
+        findViewById(R.id.button_service).setOnClickListener(onClickListener);
         btnCollect.setOnClickListener(onClickListener);
-        btnService.setOnClickListener(onClickListener);
         btnSingleBuy.setOnClickListener(onClickListener);
         btnGrouponBuy.setOnClickListener(onClickListener);
 
@@ -189,12 +185,13 @@ public class GrouponDetailActivity extends BaseActivity {
                             toast(ErrorEnum.ERROR_10003.getCode(), ErrorEnum.ERROR_10003.getMsg());
                         } else {
                             if (map.containsKey("code")) {
-                                if (Double.parseDouble(map.get("code") + "") == 200) {
+                                double code = Double.parseDouble(map.get("code") + "");
+                                if (code == 200) {
                                     Map<String, Object> ret = (Map<String, Object>) map.get("data");
                                     analysisJson(ret);
 
                                 } else {
-                                    toast(Integer.parseInt(map.get("code") + ""), TextUtils.isEmpty(map.get("msg") + "") ? ErrorEnum.ERROR_10006.getMsg() : map.get("msg") + "");
+                                    toast((int) code, TextUtils.isEmpty(map.get("msg") + "") ? ErrorEnum.ERROR_10006.getMsg() : map.get("msg") + "");
                                 }
                             } else {
                                 toast(ErrorEnum.ERROR_10005.getCode(), ErrorEnum.ERROR_10005.getMsg());
@@ -203,9 +200,6 @@ public class GrouponDetailActivity extends BaseActivity {
                     } catch (Exception e) {
                         toast(ErrorEnum.ERROR_10004.getCode(), e.getMessage());
                     }
-                    break;
-                case 2:
-                    collectUpdata(msg.obj.toString());
                     break;
             }
         }
@@ -340,8 +334,8 @@ public class GrouponDetailActivity extends BaseActivity {
         }
         setCarousel();
 
-        curPrice.setText("¥ " + goodInfo.getPrice());
-        oriPrice.setText("¥ " + goodInfo.getProduct_price());
+        curPrice.setText(String.format(getResources().getString(R.string.price_unit), goodInfo.getPrice()));
+        oriPrice.setText(String.format(getResources().getString(R.string.price_unit), goodInfo.getProduct_price()));
         oriPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         goodName.setText(goodInfo.getTitle());
         salesText.setText("月销" + goodInfo.getSales());
@@ -479,7 +473,7 @@ public class GrouponDetailActivity extends BaseActivity {
 
     //添加或取消收藏
     private void addOrCancelCollect() {
-        String url = "";
+        String url;
         if (!isCollect) //添加收藏
             url = Netconfig.addShoppingCollect;
         else    //取消收藏
@@ -487,34 +481,32 @@ public class GrouponDetailActivity extends BaseActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put(ConfigHttpReqFields.sendToken, application.getToken());
         map.put(ConfigHttpReqFields.sendProductId, goodsId);
-        httpHander.okHttpMapPost(this, url, map, 2);
+
+        ApiManager.getResultStatus(url, map, new OnHttpCallback<String>() {
+            @Override
+            public void success(String result) {
+                isCollect = !isCollect;
+                setCollect();
+            }
+
+            @Override
+            public void error(int code, String msg) {
+                toast(code, msg);
+            }
+        });
     }
 
-    //收藏图标修改
-    private void collectUpdata(String json) {
-        try {
-            HashMap map = new Gson().fromJson(json, HashMap.class);
-            if (map != null && Double.parseDouble(map.get("code") + "") == 200) {
-                setCollect();
-            } else {
-                tost(map.get("msg") + "");
-            }
-        } catch (Exception e) {
-            tost(e.getMessage());
-        }
-    }
 
     private void setCollect() {
-        if (isCollect) {  //取消收藏
-            isCollect = false;
-            btnCollect.setText("收藏");
-            btnCollect.setTextColor(Color.parseColor("#0f0f0f"));
-            TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect, 2);
-        } else {  //收藏好
-            isCollect = true;
+        if (isCollect) {
             btnCollect.setText("已收藏");
             btnCollect.setTextColor(Color.parseColor("#c22222"));
             TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect_yes, 2);
+        } else {
+            btnCollect.setText("收藏");
+            btnCollect.setTextColor(Color.parseColor("#0f0f0f"));
+            TextViewUtils.setImage(GrouponDetailActivity.this, btnCollect, R.drawable.goods_collect, 2);
+
         }
     }
 }

@@ -2,11 +2,17 @@ package com.example.haoss.indexpage.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.applibrary.base.Netconfig;
 import com.example.applibrary.custom.CustomerScrollView;
@@ -26,20 +32,24 @@ import com.example.haoss.goods.details.GoodsDetailsActivity;
 import com.example.haoss.goods.goodslist.GoodsListActivity;
 import com.example.haoss.goods.search.GoodsSearchActivity;
 import com.example.haoss.indexpage.adapter.BrandRecommondAdapter;
+import com.example.haoss.indexpage.adapter.CarouselAdapter;
 import com.example.haoss.indexpage.adapter.GridFavorAdapter;
 import com.example.haoss.indexpage.adapter.GridSortNavAdapter;
+import com.example.haoss.indexpage.fragment.BannerFragment;
 import com.example.haoss.manager.ApiManager;
 import com.example.haoss.views.MyGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BabyProductsActivity extends BaseActivity {
 
-    private FragmentView carousel;  //轮播
+    FragmentView carousel;  //轮播
+    ArrayList<FragmentDataInfo> listBanner; //轮播
 
-    private ArrayList<FragmentDataInfo> listBanner; //轮播
     private List<Nav> listNav;//导航
     private List<Nav> listBrandRecommad;//品牌推荐
     /**
@@ -140,7 +150,6 @@ public class BabyProductsActivity extends BaseActivity {
                     fragmentDataInfo.setOrder(info.getOrder());
                     listBanner.add(fragmentDataInfo);
                 }
-                setCarousel();
 
                 listNav = result.getNav();
                 listBrandRecommad = result.getBrand_recommendation();
@@ -155,7 +164,15 @@ public class BabyProductsActivity extends BaseActivity {
         });
     }
 
-
+    //设置轮播数据
+    private void setCarousel() {
+        carousel.addFragment(getSupportFragmentManager(), listBanner, 3000, new OnclickFragmentView() {
+            @Override
+            public void onItemclick(int id, String url) {
+                //轮播图点击操作
+            }
+        });
+    }
     private void getRecommond() {
         String url = Netconfig.recommend;
         HashMap<String, Object> map = new HashMap<>();
@@ -175,17 +192,6 @@ public class BabyProductsActivity extends BaseActivity {
             @Override
             public void error(int code, String msg) {
                 toast(code, msg);
-            }
-        });
-    }
-
-
-    //设置轮播数据
-    private void setCarousel() {
-        carousel.addFragment(getSupportFragmentManager(), listBanner, 3000, new OnclickFragmentView() {
-            @Override
-            public void onItemclick(int id, String url) {
-                //轮播图点击操作
             }
         });
     }

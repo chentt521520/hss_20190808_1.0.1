@@ -2,7 +2,6 @@ package com.example.haoss.indexpage.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,9 +15,7 @@ import com.example.applibrary.custom.viewfragment.OnclickFragmentView;
 import com.example.applibrary.entity.BannerInfo;
 import com.example.applibrary.entity.MenuCategory;
 import com.example.applibrary.entity.Nav;
-import com.example.applibrary.entity.NavInfo;
 import com.example.applibrary.entity.Recommond;
-import com.example.applibrary.httpUtils.HttpHander;
 import com.example.applibrary.httpUtils.OnHttpCallback;
 import com.example.applibrary.utils.IntentUtils;
 import com.example.applibrary.utils.StringUtils;
@@ -35,16 +32,15 @@ import com.example.haoss.views.MyGridView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 //健康生活
 public class HealthLifeActivity extends BaseActivity {
 
     FragmentView carousel;  //轮播
+    ArrayList<FragmentDataInfo> listBanner; //轮播
     TextView action_search_ss;  //搜索
     MyGridView gridNav;   //导航
     MyGridView gridFavor; //热销数据控件
-    ArrayList<FragmentDataInfo> listBanner; //轮播
     List<Nav> listNav;
     //导航、热销数据
     private ArrayList<Recommond> listFavor;
@@ -92,7 +88,7 @@ public class HealthLifeActivity extends BaseActivity {
         gridFavor = findViewById(R.id.ui_grid_favor);
 
         TextView good_recommond_title = findViewById(R.id.ui_good_favor_title);
-        good_recommond_title.setText("每日优选");
+        good_recommond_title.setText("为你推荐");
 
         action_search_ss.setOnClickListener(onClickListener);
         gridNav.setOnItemClickListener(onNavClickListener);

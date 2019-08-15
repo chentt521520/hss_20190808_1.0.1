@@ -671,7 +671,7 @@ public class GoodsBuyActivity extends BaseActivity {
                     if (jsonObject.containsKey("code")) {
                         int code = jsonObject.getInteger("code");
                         if (code == 200) {
-                            tost("支付成功");
+                            toast("支付成功");
                             if (intentFlag == ConfigVariate.flagGrouponIntent) {//开团成功
                                 Intent intent = new Intent(GoodsBuyActivity.this, GouponPayActivity.class);
                                 intent.putExtra("orderId", jsonObject.getString("msg"));

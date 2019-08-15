@@ -108,7 +108,6 @@ public class IndexPageFragment extends BaseFragment {
     ImageView sales, groupon; //精选活动大图、今日特价、拼团图片
 
     private List<Fragment> listCarousel = new ArrayList<>();    //轮播界面
-    Timer timerBanner;  //轮播定时器
     /**
      * 导航分类适配器
      */
@@ -187,7 +186,7 @@ public class IndexPageFragment extends BaseFragment {
         groupon = view.findViewById(R.id.ui_index_group_buying_image);
 
         searchView.setOnClickListener(onClickListener);   //搜索
-        searchView.setBackground(new CustomerCornerBg(getContext()));
+        searchView.setBackground(new CustomerCornerBg(getContext(),35f));
 
         fistpage_func.setOnItemClickListener(onItemClickListener);
         fistpage_sift.setOnItemClickListener(onsiftClickListener);
@@ -292,9 +291,7 @@ public class IndexPageFragment extends BaseFragment {
         }
         CarouselAdapter carouselAdapter = new CarouselAdapter(getChildFragmentManager(), listCarousel);
         viewPager.setAdapter(carouselAdapter);
-        if (timerBanner != null)
-            timerBanner.cancel();
-        timerBanner = new Timer();
+        Timer timerBanner = new Timer();
         index = 1;
         fistpage_dot.check(index);
         timerBanner.schedule(new TimerTask() {
@@ -413,7 +410,7 @@ public class IndexPageFragment extends BaseFragment {
                     IntentUtils.startIntent(mContext, FestivalGiftActivity.class, bundle);
                     break;
                 default:
-                    IntentUtils.startIntent(mContext, FestivalGiftActivity.class, bundle);
+                    IntentUtils.startIntent(mContext, ExcellentLifeActivity.class, bundle);
                     break;
             }
         }

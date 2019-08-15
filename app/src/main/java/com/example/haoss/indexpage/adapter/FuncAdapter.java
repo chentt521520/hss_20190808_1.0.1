@@ -50,7 +50,7 @@ public class FuncAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         Info info;
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_func, null);
+            view = LayoutInflater.from(context).inflate(R.layout.item_index_nav, null);
             info = new Info();
             info.image = view.findViewById(R.id.item_func_image);
             info.text = view.findViewById(R.id.item_func_text);

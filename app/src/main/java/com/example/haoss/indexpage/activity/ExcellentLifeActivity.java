@@ -15,7 +15,6 @@ import com.example.applibrary.custom.viewfragment.OnclickFragmentView;
 import com.example.applibrary.entity.BannerInfo;
 import com.example.applibrary.entity.MenuCategory;
 import com.example.applibrary.entity.Nav;
-import com.example.applibrary.entity.NavInfo;
 import com.example.applibrary.entity.Recommond;
 import com.example.applibrary.httpUtils.OnHttpCallback;
 import com.example.applibrary.utils.IntentUtils;

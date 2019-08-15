@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.applibrary.base.ConfigHttpReqFields;
 import com.example.applibrary.base.ConfigVariate;
 import com.example.applibrary.base.Netconfig;
-import com.example.applibrary.custom.ToastUtils;
 import com.example.applibrary.entity.LoginInfo;
 import com.example.applibrary.entity.PassCheck;
 import com.example.applibrary.httpUtils.OnHttpCallback;
