@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.applibrary.entity.Nav;
 import com.example.applibrary.utils.DensityUtil;
 import com.example.applibrary.utils.ImageUtils;
