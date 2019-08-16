@@ -62,8 +62,6 @@ public class ImageUtils {
     public static void loadSizePic(Context context, String imageUrl, int width, int height, ImageView imageView) {
         RequestOptions options = new RequestOptions()
                 .override(width, height)
-                .placeholder(R.mipmap.default_image)
-                .error(R.mipmap.default_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(context)
                 .load(imageUrl)
