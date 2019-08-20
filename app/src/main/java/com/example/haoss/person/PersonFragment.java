@@ -32,7 +32,6 @@ import com.example.haoss.manager.ApiManager;
 import com.example.haoss.person.address.AddressShowActivity;
 import com.example.haoss.person.adpter.SelfGvadapter;
 import com.example.haoss.person.aftersale.AfterSaleActivity;
-import com.example.haoss.person.cardConvert.CardConvertResultActivity;
 import com.example.haoss.person.cardConvert.CardNumberConvertActivity;
 import com.example.haoss.person.collect.CollectListActivity;
 import com.example.haoss.person.coupon.CouponActivity;
@@ -360,7 +359,7 @@ public class PersonFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), ServerOnlineActivity.class));
                 break;
             case R.id.person_my_card_convert:   //购物卡兑换
-                IntentUtils.startIntent(mContext, CardConvertResultActivity.class);
+                IntentUtils.startIntent(mContext, CardNumberConvertActivity.class);
                 break;
             case R.id.person_indenty:   //身份认证
                 if (isRealName == 1) {//已认证
