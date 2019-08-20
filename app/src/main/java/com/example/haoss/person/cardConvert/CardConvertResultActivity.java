@@ -1,6 +1,5 @@
 package com.example.haoss.person.cardConvert;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -31,11 +30,7 @@ public class CardConvertResultActivity extends BaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.ui_card_back_index:
-                    Intent intent = new Intent();
-                    intent.setClass(CardConvertResultActivity.this, MainActivity.class);
-                    intent.putExtra("flag", 0);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    IntentUtils.startIntentFrist(CardConvertResultActivity.this, MainActivity.class);
                     break;
                 case R.id.ui_card_back_wallet:
                     IntentUtils.startIntent(CardConvertResultActivity.this, WalletActivity.class);

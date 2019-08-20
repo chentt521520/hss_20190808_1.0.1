@@ -98,40 +98,21 @@ public class ShopCatFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setView();
-        if (shoppingCartAdapter != null) {
-            shoppingCartAdapter.defaultState();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         myDialogTwoButton = null;
     }
 
+    //判断界面是否可见
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        addListInfo();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {//界面可见时
+            if (shopCatView != null) {
+                setView();
+            }
+        }
     }
-
-//    //判断界面是否可见
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        try {
-//            if (getUserVisibleHint()) {//界面可见时
-//                addListInfo();
-//                if (shoppingCartAdapter != null) {
-//                    shoppingCartAdapter.defaultState();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     //控件加载
     private void load(View view) {
@@ -172,9 +153,10 @@ public class ShopCatFragment extends BaseFragment {
                 }
             }
         });
+        setView();
     }
 
-    private void setView(){
+    private void setView() {
         if (!application.isLogin()) {//未登录
             action_title_other.setVisibility(View.GONE);    //隐藏编辑
             shopCatView.findViewById(R.id.ui_shopcart_not_login_hint).setVisibility(View.VISIBLE);
@@ -186,6 +168,9 @@ public class ShopCatFragment extends BaseFragment {
             shopCatView.findViewById(R.id.ui_shopcart_empty).setVisibility(View.VISIBLE);
             shopCatView.findViewById(R.id.ui_shopcart_list).setVisibility(View.VISIBLE);
 
+            if (shoppingCartAdapter != null) {
+                shoppingCartAdapter.defaultState();
+            }
             addListInfo();
         }
     }

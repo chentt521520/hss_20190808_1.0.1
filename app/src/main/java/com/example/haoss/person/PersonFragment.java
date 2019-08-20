@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.applibrary.base.ConfigVariate;
-import com.example.applibrary.custom.ToastUtils;
 import com.example.applibrary.dialog.NoticeDialog;
 import com.example.applibrary.entity.OrderCount;
 import com.example.applibrary.entity.UserInfo;
@@ -33,6 +32,7 @@ import com.example.haoss.manager.ApiManager;
 import com.example.haoss.person.address.AddressShowActivity;
 import com.example.haoss.person.adpter.SelfGvadapter;
 import com.example.haoss.person.aftersale.AfterSaleActivity;
+import com.example.haoss.person.cardConvert.CardConvertResultActivity;
 import com.example.haoss.person.cardConvert.CardNumberConvertActivity;
 import com.example.haoss.person.collect.CollectListActivity;
 import com.example.haoss.person.coupon.CouponActivity;
@@ -158,24 +158,21 @@ public class PersonFragment extends BaseFragment {
         return personView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getInfo();
-        getFormCountByType();
-    }
-
     //显示时刷新
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (personView != null) {
-//                msgUnread();
                 getInfo();
-                getFormCountByType();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        getInfo();
+        super.onResume();
     }
 
     /**
@@ -287,7 +284,7 @@ public class PersonFragment extends BaseFragment {
 
                     person_user_name.setText(result.getNickname());
                     ImageUtils.loadCirclePic(mContext, result.getAvatar(), person_user_head);
-//                    msgUnread();
+                    getFormCountByType();
                 }
 
                 @Override
@@ -313,7 +310,6 @@ public class PersonFragment extends BaseFragment {
                     IntentUtils.startIntent(mContext, CouponActivity.class);
                     break;
                 case R.id.person_integral_linear:   //积分
-//                    String integral = info.getIntegral();
                     IntentUtils.startIntent(mContext, IntegralActivity.class, "0");
                     break;
                 case R.id.person_foot_linear:   //足迹
@@ -364,7 +360,7 @@ public class PersonFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), ServerOnlineActivity.class));
                 break;
             case R.id.person_my_card_convert:   //购物卡兑换
-                IntentUtils.startIntent(mContext, CardNumberConvertActivity.class);
+                IntentUtils.startIntent(mContext, CardConvertResultActivity.class);
                 break;
             case R.id.person_indenty:   //身份认证
                 if (isRealName == 1) {//已认证

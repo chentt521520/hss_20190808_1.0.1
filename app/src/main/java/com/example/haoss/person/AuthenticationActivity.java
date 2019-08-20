@@ -22,7 +22,6 @@ import com.example.haoss.base.AppLibLication;
 import com.example.haoss.base.BaseActivity;
 import com.example.haoss.manager.ApiManager;
 import com.example.haoss.person.other.PictureSelectorConfig;
-import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -110,11 +109,7 @@ public class AuthenticationActivity extends BaseActivity {
             tost("请输入身份证号");
             return;
         }
-        if (TextUtils.isEmpty(auther_phone.getText().toString())) {
-            if (!judgePhone(auther_phone.getText().toString())) {
-
-            }
-            tost("请输入有效手机号");
+        if (!judgePhone(auther_phone.getText().toString())) {
             return;
         }
         Map<String, Object> map = new HashMap<>();

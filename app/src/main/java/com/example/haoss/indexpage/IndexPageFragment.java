@@ -186,7 +186,7 @@ public class IndexPageFragment extends BaseFragment {
         groupon = view.findViewById(R.id.ui_index_group_buying_image);
 
         searchView.setOnClickListener(onClickListener);   //搜索
-        searchView.setBackground(new CustomerCornerBg(getContext(),35f));
+        searchView.setBackground(new CustomerCornerBg(getContext(), 35f));
 
         fistpage_func.setOnItemClickListener(onItemClickListener);
         fistpage_sift.setOnItemClickListener(onsiftClickListener);
@@ -273,7 +273,7 @@ public class IndexPageFragment extends BaseFragment {
 
             @Override
             public void error(int code, String msg) {
-                toast(code, msg);
+                toast(code + "," + msg);
             }
         });
     }

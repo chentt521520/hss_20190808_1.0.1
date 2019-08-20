@@ -25,6 +25,7 @@ import com.example.applibrary.httpUtils.OnHttpCallback;
 import com.example.applibrary.utils.IntentUtils;
 import com.example.applibrary.utils.MD5Util;
 import com.example.applibrary.utils.StringUtils;
+import com.example.haoss.MainActivity;
 import com.example.haoss.R;
 import com.example.haoss.base.AppLibLication;
 import com.example.haoss.base.BaseActivity;
@@ -117,9 +118,6 @@ public class LoginActivity extends BaseActivity {
         mContext = this;
 
         flag = getIntent().getIntExtra(IntentUtils.intentActivityFlag, 0);
-        if (flag == 1) {
-            page_back.setVisibility(View.GONE);
-        }
 
         account = (String) SharedPreferenceUtils.getPreference(this, ConfigVariate.sPdbAccount, "S");
         password = (String) SharedPreferenceUtils.getPreference(this, ConfigVariate.sPdbPassword, "S");
@@ -141,7 +139,11 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.page_back:
-                finish();
+                if (flag == 1) {
+                    IntentUtils.startIntentFrist(LoginActivity.this, MainActivity.class);
+                } else {
+                    finish();
+                }
                 break;
             case R.id.input_edit_name:
                 break;
@@ -367,7 +369,12 @@ public class LoginActivity extends BaseActivity {
             public void success(PassCheck result) {
                 boolean is_pass = result.isIs_pass();
                 SharedPreferenceUtils.setPreference(LoginActivity.this, ConfigVariate.isPass, is_pass, "B");
-                finish();
+
+                if (flag == 1) {
+                    IntentUtils.startIntentFrist(LoginActivity.this, MainActivity.class);
+                } else {
+                    finish();
+                }
             }
 
             @Override
@@ -381,8 +388,7 @@ public class LoginActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (flag == 1) {
-                toast("请登录您的账号!");
-                return true;
+                IntentUtils.startIntentFrist(LoginActivity.this, MainActivity.class);
             }
         }
         return super.onKeyDown(keyCode, event);
